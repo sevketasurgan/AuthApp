@@ -1,12 +1,32 @@
-<h2>Login</h2>
-<form (ngSubmit)="onLogin()">
-  <div>
-    <label>Email:</label>
-    <input type="email" [(ngModel)]="loginData.email" name="email" required />
+<link rel="stylesheet" href="login.component.css">
+
+<div class="login-container">
+  <div class="login-form">
+    <h2>Login</h2>
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email"
+               id="email"
+               name="email"
+               [(ngModel)]="email"
+               required
+               placeholder="Enter your email" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password"
+               id="password"
+               name="password"
+               [(ngModel)]="password"
+               required
+               placeholder="Enter your password" />
+      </div>
+      <button type="submit" [disabled]="!loginForm.form.valid">Login</button>
+      <p>Not a member? <a [routerLink]="['/register']">Register</a></p>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    </form>
   </div>
-  <div>
-    <label>Password:</label>
-    <input type="password" [(ngModel)]="loginData.password" name="password" required />
-  </div>
-  <button type="submit">Login</button>
-</form>
+</div>
+
+

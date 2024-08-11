@@ -9,9 +9,9 @@ namespace AuthApp.Server.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly LoginContext _context;
+        private readonly AccountContext _context;
         
-        public LoginController(LoginContext context)
+        public LoginController(AccountContext context)
         {
             _context = context;
         }
@@ -28,12 +28,18 @@ namespace AuthApp.Server.Controllers
 
             if (existingUser == null)
             {
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync();
-                return Created();
+                //_context.Users.Add(user);
+                //await _context.SaveChangesAsync(); // For registration purposes
+                return BadRequest("User does not exist.");
+            }
+             else if (existingUser != null && user.Password == existingUser.Password && user.Email == existingUser.Email)
+            {
+                return Ok(new { message = "User exists." });
             }
 
-            return Ok(new { message = "User exists." });
+            return Unauthorized();
+            
+            
         }
     }
 }
