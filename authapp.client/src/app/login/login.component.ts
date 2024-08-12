@@ -1,41 +1,35 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { catchError, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   email: string = '';
   password: string = '';
-  errorMessage: string | null = null;
+  errorMessage: string = '';
+  showSuccessMessage = false;
+  constructor(private http: HttpClient, private router: Router) {}
 
-  constructor(private http: HttpClient) { }
+onSubmit(){
+  this.login()
+}
 
-  onSubmit() {
-    const loginData = { email: this.email, password: this.password };
-    this.http.post('/api/login', loginData, { observe: 'response', responseType: 'text' })
-      .pipe(
-        catchError(this.handleError.bind(this))
-      )
-      .subscribe((response: HttpResponse<string> | any) => {
-        if (response instanceof HttpResponse) {
-          const status = response.status;
-          console.log("Status code " + status);
-          if (status === 200) {
-            console.log('Login successful');
-            this.errorMessage = "Successfully Logined."
-            // Giriş başarılı olduğunda yapılacak işlemler
-          }
-        }
-      });
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    // Hata durumunu işleme
-    console.error('Login failed', error);
-    this.errorMessage = 'Login failed. Please check your credentials.';
-    return of(error);
+  login() {
+    const loginData = { Email: this.email, Password: this.password };
+    this.http.post<{ token: string }>('/api/login', loginData).subscribe(
+      (response) => {
+        if(response)
+        localStorage.setItem('token', response.token);
+        this.showSuccessMessage = true;
+        this.router.navigate(['/home']);
+      },
+      (error) => {
+        this.errorMessage = 'Login failed: ' + error.error;
+      }
+    );
   }
 }

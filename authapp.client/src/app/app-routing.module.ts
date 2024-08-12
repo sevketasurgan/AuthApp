@@ -3,12 +3,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 const routes: Routes = [
-  { path: '', component: AppComponent }, // Uygulama ilk açıldığında AppComponent yüklensin
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent }, // Ana sayfa rotası
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
+  { path: 'register', component: RegisterComponent },
+  { path: '', component: AppComponent },
+  { path: 'navbar', component: NavbarComponent }
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

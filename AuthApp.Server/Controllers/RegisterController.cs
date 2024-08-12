@@ -1,7 +1,7 @@
-﻿using AuthApp.Server.Models;
-using Microsoft.AspNetCore.Http;
+﻿using AuthApp.Server.Models; // Kullanıcı modelinizin bulunduğu namespace
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace AuthApp.Server.Controllers
 {
@@ -9,33 +9,46 @@ namespace AuthApp.Server.Controllers
     [ApiController]
     public class RegisterController : ControllerBase
     {
-        private readonly AccountContext _context;
+        private readonly UserManager<User> _userManager;
+        private readonly IConfiguration _configuration;
 
-        public RegisterController(AccountContext context)
+        public RegisterController(UserManager<User> userManager, IConfiguration configuration)
         {
-            _context = context;
+            _userManager = userManager;
+            _configuration = configuration;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] User user)
+        public async Task<IActionResult> Register([FromBody] User model)
         {
-            if (user == null || string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
+            if (model == null || string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
             {
                 return BadRequest("Email and Password are required.");
             }
 
-            var existingUser = await _context.Users.FirstOrDefaultAsync(U => U.Email == user.Email);
-            if (existingUser == null) {
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync(); // For registration purposes
-                // Register Process
-                return Ok("User Registered.");
-            }
-            else
+            var user = new User
             {
-                return BadRequest("User exist.");
+                UserName = model.Email,
+                Email = model.Email,
+                Password = model.Password
+            };
+
+            // Kullanıcıyı oluştur (Şifre burada hashlenir)
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                // Token oluşturma işlemi burada yapılabilir
+                return Ok(new { message = "User created successfully." });
             }
-            
+
+            return BadRequest(result.Errors);
         }
+    }
+
+    public class RegisterModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }
