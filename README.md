@@ -78,16 +78,16 @@ The application will be available at http://localhost:4200.
 API Endpoints
 POST /api/register: Creates a new user registration.
 
-+Body: { "email": "user@example.com", "password": "Password123!" }
-+Response: { "token": "jwt_token_here" }
+* Body: { "email": "user@example.com", "password": "Password123!" }
+* Response: { "token": "jwt_token_here" }
 POST /api/login: Logs in a user.
 
-+Body: { "email": "user@example.com", "password": "Password123!" }
-+Response: { "token": "jwt_token_here" }
+* Body: { "email": "user@example.com", "password": "Password123!" }
+* Response: { "token": "jwt_token_here" }
 Usage Guide
-+Register: Click on the "Register" link on the home page to create a new user account.
-+Login: Click on the "Login" link on the home page to log in.
-+Logout: After logging in, click on the "Logout" button at the top right corner to log out.
+* Register: Click on the "Register" link on the home page to create a new user account.
+* Login: Click on the "Login" link on the home page to log in.
+* Logout: After logging in, click on the "Logout" button at the top right corner to log out.
 Contributing
 If you would like to contribute, please feel free to submit pull requests and report issues. Before contributing, please review the CONTRIBUTING.md file.
 
