@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
+import { NgForm } from '@angular/forms';
+
 
 @Component({
   selector: 'app-register',
@@ -13,7 +15,7 @@ export class RegisterComponent {
 
   constructor(private http: HttpClient) { }
 
-  onSubmit() {
+  onSubmit(form: NgForm) {
     const registerData = { email: this.email, password: this.password };
     this.http.post('/api/register', registerData, { observe: 'response', responseType: 'text' })
       .pipe(

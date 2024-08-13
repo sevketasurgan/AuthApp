@@ -3,7 +3,7 @@
 <div class="login-container">
   <div class="login-form">
     <h2>Register</h2>
-    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm" class="group ">
       <div class="form-group">
         <label for="email">Email</label>
         <input type="email"
@@ -11,7 +11,12 @@
                name="email"
                [(ngModel)]="email"
                required
-               placeholder="Enter your email" />
+               placeholder="Enter your email" 
+               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+               />
+               <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
+                Please enter a valid email address
+              </span>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
@@ -19,10 +24,22 @@
                id="password"
                name="password"
                [(ngModel)]="password"
+               #passwordInput="ngModel"
                required
-               placeholder="Enter your password" />
+               placeholder="Enter your password"
+               pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$"
+               />
+               <span class="mt-2 text-sm text-red-500"
+          *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)">
+      <ng-container *ngIf="passwordInput.errors?.['required']">
+        Password is required.
+      </ng-container>
+      <ng-container *ngIf="passwordInput.errors?.['pattern']">
+        Password must contain at least 8 characters, including uppercase letters, lowercase letters, numbers, and special characters.
+      </ng-container>
+    </span>
       </div>
-      <button type="submit" [disabled]="!loginForm.form.valid">Register</button>
+      <button type="submit" [disabled]="!loginForm.form.valid" class="... group-invalid:pointer-events-none group-invalid:opacity-30">Register</button>
       <p>Have a account ?  <a [routerLink]="['/login']">Login</a></p>
       <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
     </form>

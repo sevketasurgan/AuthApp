@@ -5,10 +5,11 @@ import { RegisterComponent } from './register/register.component';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent }, // Ana sayfa rotası
+  { path: 'home', component: HomeComponent , canActivate: [AuthGuard]}, // Ana sayfa rotası
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: '', component: AppComponent },
