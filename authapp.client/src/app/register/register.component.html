@@ -41,6 +41,7 @@
       </div>
       <button type="submit" [disabled]="!loginForm.form.valid" class="... group-invalid:pointer-events-none group-invalid:opacity-30">Register</button>
       <p>Have a account ?  <a [routerLink]="['/login']">Login</a></p>
+      <div *ngIf="successMessage" class="text text-green-600 text-lg">Succesfully registered.</div>
       <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
     </form>
   </div>

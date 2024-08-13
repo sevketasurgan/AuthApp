@@ -8,11 +8,11 @@
       <div *ngIf="userEmail" class="flex items-center space-x-3 rtl:space-x-reverse">
         <span class="text-md font-bold text-gray-800 dark:text-white">Welcome, {{ userEmail }}</span>
       </div>
-      <div *ngIf="userEmail" class="flex items-center justify-center rounded-md p-2 bg-red-800" (click)="logout()">
+      <div *ngIf="userEmail" class="flex items-center justify-center rounded-md p-2 bg-red-800 cursor-pointer" (click)="logout()">
         <span class="text-md font-bold text-white dark:text-white">Logout</span>
       </div>
       <!-- Kullanıcı e-postası yoksa Login linkini göster -->
-      <div *ngIf="!userEmail" class="flex items-center justify-center rounded-md p-2 bg-blue-800">
+      <div *ngIf="!userEmail" class="flex items-center justify-center rounded-md p-2 bg-blue-800 cursor-pointer">
         <a href="/login" class="text-md font-bold text-white dark:text-white hover:underline">Login</a>
       </div>
     </div>

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { NgForm } from '@angular/forms';
@@ -12,8 +14,9 @@ export class RegisterComponent {
   email: string = '';
   password: string = '';
   errorMessage: string | null = null;
+  successMessage = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private router: Router) { }
 
   onSubmit(form: NgForm) {
     const registerData = { email: this.email, password: this.password };
@@ -27,7 +30,12 @@ export class RegisterComponent {
           console.log("Status code " + status);
           if (status === 200) {
             console.log('Register successful');
-            this.errorMessage = "User Registered."
+            // this.errorMessage = "User Registered."
+            this.successMessage = true;
+            setTimeout(() => {
+              this.router.navigate(['/home']);
+              
+              }, 2000);
           }
         }
       });
