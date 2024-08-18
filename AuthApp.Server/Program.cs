@@ -8,12 +8,12 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<AccountContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
  options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 // Add services to the container.
 
 builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<AccountContext>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(options =>
