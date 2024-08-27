@@ -7,6 +7,9 @@ interface WorkTask {
   name: string;
   description: string;
   status:number;
+  assignedToUserId?:string;
+  createdByUserId?:string;
+
 }
 @Injectable({
   providedIn: 'root',
@@ -37,5 +40,12 @@ export class WorkTaskService {
       'Authorization':`Bearer ${token}`
     });
     return this.http.delete<WorkTask>(`${this.apiUrl}/${id}`,{headers});
+  }
+  updateWorkTask(task: WorkTask): Observable<WorkTask>{
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization':`Bearer ${token}`
+    });
+    return this.http.put<WorkTask>(`${this.apiUrl}/updateWorkTask/${task.id}`, task,{headers});
   }
 }

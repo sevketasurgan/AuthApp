@@ -48,7 +48,7 @@ builder.Services.AddSwaggerGen();
 // Add CORS policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularApp",
+    options.AddPolicy("AllowAll",
         policy =>
         {
             policy.WithOrigins("https://localhost:4200",

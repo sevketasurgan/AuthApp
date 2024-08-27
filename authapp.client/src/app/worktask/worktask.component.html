@@ -11,10 +11,10 @@
   *ngIf="isModalOpen"
   class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50"
 >
-  <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+  <div class="bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-md">
     <!-- Modal header -->
     <div class="flex justify-between items-center pb-3">
-      <h3 class="text-lg font-semibold">Create New Worktask</h3>
+      <h3 class="text-lg font-semibold text-white">Create New Worktask</h3>
       <button (click)="closeModal()" class="text-gray-400 hover:text-gray-900">
         <svg
           class="w-5 h-5"
@@ -36,7 +36,7 @@
     <!-- Modal body -->
     <form>
       <div class="mb-4">
-        <label for="name" class="block text-sm font-medium text-gray-700"
+        <label for="name" class="block text-sm font-medium text-white"
           >Name</label
         >
         <input
@@ -48,7 +48,7 @@
         />
       </div>
       <div class="mb-4">
-        <label for="description" class="block text-sm font-medium text-gray-700"
+        <label for="description" class="block text-sm font-medium text-white"
           >Description</label
         >
         <textarea
@@ -60,19 +60,19 @@
         ></textarea>
       </div>
       <div class="mb-4">
-        <label for="name" class="block text-sm font-medium text-gray-700"
-          >Status</label
+        <label for="name" class="block text-sm font-medium text-white"
+          >Assign To:</label
         >
-
         <select
-          [(ngModel)]="newWorkTask.status"
-          id="status"
-          name="status"
-          class="mt-1 block w-full border-gray-800 rounded-md shadow-sm"
+          [(ngModel)]="newWorkTask.assignedToUserId"
+          id="assignToModal"
+          name="assignToModal"
+          class="mt-1 block w-full rounded-md shadow-sm"
         >
-          <option value="1">Pending</option>
-          <option value="2">In Progress</option>
-          <option value="3">Done</option>
+          <option *ngFor="let user of users" [value]="user.email" class="bg-white">
+            {{ user.email }}
+            <!-- Kullanıcının emailini gösterebilirsiniz -->
+          </option>
         </select>
       </div>
       <div class="flex justify-end">
@@ -104,6 +104,8 @@
     >
       <tr>
         <th scope="col" class="px-12 py-3">STATUS</th>
+        <th scope="col" class="px-12 py-3">ASSIGNED BY</th>
+        <th scope="col" class="px-12 py-3">ASSIGNED TO</th>
         <th scope="col" class="px-12 py-3">NAME</th>
         <th scope="col" class="px-12 py-3">DESCRIPTION</th>
         <th scope="col" class="px-6 py-3">ACTIONS</th>
@@ -114,31 +116,47 @@
         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
         *ngFor="let task of workTasks"
       >
-        <th
+        <td
           scope="row"
           class="px-12 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
-        <select 
-        [(ngModel)]="task.status" 
-        id="status" 
-        name="status" 
-        class="mt-1 block w-2/4 border-gray-800 rounded-md shadow-sm text-white"
-        
-        [ngClass]="task.status == 1 ? 'text-blue-500' : task.status == 2 ? 'text-yellow-500' : 'text-green-500'"
-      >
+<select
+            [(ngModel)]="task.status"
+            (change)="onChangeStatus(task, $event)"
+
+            id="status"
+            name="status"
+            class="mt-1 block w-full border-gray-800 rounded-md shadow-sm text-white"
+            [ngClass]="
+              task.status == 1
+                ? 'text-blue-500'
+                : task.status == 2
+                ? 'text-yellow-500'
+                : 'text-green-500'
+            "
+          >
             <option
               *ngFor="let status of statuses"
               id="status"
               [value]="status.value"
               [selected]="status.value == newWorkTask.status"
               class="text-center p-2 text-gray-900"
-              
             >
               {{ status.label }}
             </option>
             <!-- {{task.status == 1?"Pending":task.status == 2?"In Progress":"Done"}} -->
           </select>
-        </th>
+        </td>
+        <td scope="row"
+        class="px-12 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          {{task.createdByUserId }}
+        </td>
+        <td scope="row"
+        class="px-12 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+          {{task.assignedToUserId }}
+        </td>
+       
+       
         <td class="px-12 py-4">
           {{ task.name }}
         </td>

@@ -17,12 +17,18 @@ namespace AuthApp.Server.Controllers
         //private readonly UserManager<User> _userManager;
 
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public WorkTaskController(ApplicationDbContext context)
+        public WorkTaskController(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
-
+        [HttpGet("GetUsers")]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsers(){
+            var users = await _userManager.Users.ToListAsync();
+            return Ok(users);
+        }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WorkTask>>> GetWorkTasks()
         {
@@ -48,7 +54,7 @@ namespace AuthApp.Server.Controllers
           
             workTask.CreatedByUserId = userIdClaim;
             workTask.IsDeleted = false;
-
+            
             _context.WorkTasks.Add(workTask);
             await _context.SaveChangesAsync();
             return CreatedAtAction("GetWorkTasks", new {id = workTask.Id}, workTask);
@@ -71,5 +77,26 @@ namespace AuthApp.Server.Controllers
                 return NotFound();
             }
         }
+        [HttpPut("updateWorkTask/{id}")]
+        public async Task<ActionResult<WorkTask>> UpdateWorkTask(int id, [FromBody] WorkTask workTask)
+        {
+            var workTaskToUpdate = await _context.WorkTasks.FindAsync(id);
+
+            if (workTaskToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            // Update fields
+            workTaskToUpdate.Name = workTask.Name;
+            workTaskToUpdate.Description = workTask.Description;
+            workTaskToUpdate.Status = workTask.Status;
+            workTaskToUpdate.AssignedToUserId = workTask.AssignedToUserId;
+
+            await _context.SaveChangesAsync();
+            return Ok(workTaskToUpdate);
+        }
     }
 }
+    
+
