@@ -6,6 +6,7 @@ interface WorkTask{
   id?: number;
   name:string;
   description: string;
+  status: number;
 }
 @Component({
   selector: 'app-worktask',
@@ -15,9 +16,13 @@ interface WorkTask{
 
 export class WorktaskComponent implements OnInit {
   workTasks: WorkTask[] = [];
-  newWorkTask: WorkTask = {name:'',description:''};
+  newWorkTask: WorkTask = {name:'',description:'',status:0};
   isModalOpen = false;
-
+  statuses = [
+    { value: 1, label: 'Pending' },
+    { value: 2, label: 'In Progress' },
+    { value: 3, label: 'Done' }
+  ];
   openModal() {
     this.isModalOpen = true;
   }
@@ -31,6 +36,10 @@ export class WorktaskComponent implements OnInit {
     this.loadTasks();
   }
 
+  selectStatus(status: number): number {
+    
+    return status;
+  }
   loadTasks() {
     this.workTaskService.getWorkTasks().subscribe(tasks => {
       this.workTasks = tasks;

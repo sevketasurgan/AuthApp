@@ -1,4 +1,4 @@
-using AuthApp.Server;
+﻿using AuthApp.Server;
 using AuthApp.Server.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -45,6 +45,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp",
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:4200",
+                "https://localhost",
+                "http://localhost",
+                "http://localhost:4200",
+                "https://localhost:7265") // Angular uygulamanızın adresi
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials(); // Eğer kimlik doğrulama gerekiyorsa
+        });
+});
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -59,7 +76,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+
 
 //app.UseCors();
 app.UseCors(x => x
@@ -68,7 +85,7 @@ app.UseCors(x => x
             .AllowAnyHeader());
 
 
-
+app.UseAuthorization();
 
 app.MapControllers();
 

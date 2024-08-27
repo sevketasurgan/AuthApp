@@ -3,6 +3,7 @@ using System;
 using AuthApp.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AuthApp.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240825183543_WorkTaskTable")]
+    partial class WorkTaskTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,11 +101,11 @@ namespace AuthApp.Server.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AssignedToUserId")
-                        .HasColumnType("text");
+                    b.Property<int?>("AssignedToUserId")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("CreatedByUserId")
-                        .HasColumnType("text");
+                    b.Property<int?>("CreatedByUserId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("timestamp with time zone");

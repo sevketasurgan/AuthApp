@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 interface WorkTask {
   id?: number;
   name: string;
   description: string;
+  status:number;
 }
 @Injectable({
   providedIn: 'root',
@@ -13,14 +14,28 @@ interface WorkTask {
 export class WorkTaskService {
   private apiUrl = 'https://localhost:7265/api/worktask';
 
+
   constructor(private http: HttpClient) {}
   getWorkTasks(): Observable<WorkTask[]> {
-    return this.http.get<WorkTask[]>(this.apiUrl);
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization':`Bearer ${token}`
+    });
+    console.log(headers);
+    return this.http.get<WorkTask[]>(this.apiUrl,{headers});
   }
   addWorkTask(task: WorkTask): Observable<WorkTask> {
-    return this.http.post<WorkTask>(this.apiUrl, task);
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization':`Bearer ${token}`
+    });
+    return this.http.post<WorkTask>(this.apiUrl, task,{headers});
   }
   deleteWorkTask(id: number): Observable<WorkTask>{
-    return this.http.delete<WorkTask>(`${this.apiUrl}/${id}`);
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization':`Bearer ${token}`
+    });
+    return this.http.delete<WorkTask>(`${this.apiUrl}/${id}`,{headers});
   }
 }
