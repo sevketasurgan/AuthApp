@@ -106,7 +106,6 @@
         <th scope="col" class="px-12 py-3">STATUS</th>
         <th scope="col" class="px-12 py-3">NAME</th>
         <th scope="col" class="px-12 py-3">DESCRIPTION</th>
-
         <th scope="col" class="px-6 py-3">ACTIONS</th>
       </tr>
     </thead>
@@ -120,11 +119,12 @@
           class="px-12 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
         >
         <select 
-        [(ngModel)]="newWorkTask.status" 
+        [(ngModel)]="task.status" 
         id="status" 
         name="status" 
         class="mt-1 block w-2/4 border-gray-800 rounded-md shadow-sm text-white"
-        [ngClass]="newWorkTask.status == 1?'text-blue-500':newWorkTask.status == 2?'text-yellow-500':'text-green-500'"
+        
+        [ngClass]="task.status == 1 ? 'text-blue-500' : task.status == 2 ? 'text-yellow-500' : 'text-green-500'"
       >
             <option
               *ngFor="let status of statuses"
