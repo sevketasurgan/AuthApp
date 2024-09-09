@@ -95,4 +95,4 @@ License
 This project is licensed under the MIT License.
 
 Contact
-For questions and feedback, you can reach out at sevketasurgan@example.com.
+For questions and feedback, you can reach out at sevketasurgan@gmail.com.
